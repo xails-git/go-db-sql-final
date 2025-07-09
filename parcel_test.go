@@ -59,6 +59,7 @@ func TestAddGetDelete(t *testing.T) {
 	assert.Equal(t, parcel.Status, res.Status, "статус не совпадает")
 	assert.Equal(t, parcel.Address, res.Address, "адрес не совпадает")
 	assert.Equal(t, parcel.CreatedAt, res.CreatedAt, "время создания не совпадает")
+	assert.Equal(t, parcel.Number, res.Number, "номер не совпадает")
 
 	// delete
 	// удалите добавленную посылку, убедитесь в отсутствии ошибки
@@ -99,9 +100,9 @@ func TestSetAddress(t *testing.T) {
 	// получите добавленную посылку и убедитесь, что адрес обновился
 
 	res, err := store.Get(id)
-	assert.NoError(t, err)
+	require.NoError(t, err)
 
-	require.Equal(t, newAddress, res.Address, "не совпадение нового добавленного адреса")
+	assert.Equal(t, newAddress, res.Address, "не совпадение нового добавленного адреса")
 }
 
 // TestSetStatus проверяет обновление статуса
@@ -132,7 +133,7 @@ func TestSetStatus(t *testing.T) {
 	// получите добавленную посылку и убедитесь, что статус обновился
 
 	res, err := store.Get(id)
-	assert.NoError(t, err)
+	require.NoError(t, err)
 
 	assert.Equal(t, ParcelStatusSent, res.Status, "не совпадения статуса с обновленным")
 
@@ -173,7 +174,7 @@ func TestGetByClient(t *testing.T) {
 
 	// get by client
 	storedParcels, err := store.GetByClient(client) // получите список посылок по идентификатору клиента, сохранённого в переменной client
-	assert.NoError(t, err)
+	require.NoError(t, err)
 
 	// убедитесь в отсутствии ошибки
 	// убедитесь, что количество полученных посылок совпадает с количеством добавленных
@@ -185,7 +186,7 @@ func TestGetByClient(t *testing.T) {
 		expected, ok := parcelMap[parcel.Number]
 		assert.True(t, ok, "посылка %d не найдена", parcel.Number)
 
-		require.Equal(t, expected.Client, parcel.Client)
+		assert.Equal(t, expected.Client, parcel.Client)
 		require.Equal(t, expected.Status, parcel.Status)
 		require.Equal(t, expected.Address, parcel.Address)
 		require.Equal(t, expected.CreatedAt, parcel.CreatedAt)

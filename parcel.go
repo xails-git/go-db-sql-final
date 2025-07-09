@@ -45,9 +45,9 @@ func (s ParcelStore) Get(number int) (Parcel, error) {
 	// заполните объект Parcel данными из таблицы
 	err := row.Scan(&p.Number, &p.Client, &p.Status, &p.Address, &p.CreatedAt)
 	if err != nil {
-		return p, fmt.Errorf("ошибка сканирования: %w", err)
+		return Parcel{}, fmt.Errorf("ошибка сканирования: %w", err)
 	}
-	return Parcel{}, nil
+	return p, nil
 }
 
 func (s ParcelStore) GetByClient(client int) ([]Parcel, error) {
